@@ -1,16 +1,15 @@
 package com.webstaurantstore.utils;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
 // Class to handle properties from a config file in case we need to change URLs later
-public class ConfigManager {
+public class PropertiesLoader {
     private static Properties properties;
     static {
         try {
-            FileInputStream fileInputStream = new FileInputStream("/test/resources/config.properties");
+            FileInputStream fileInputStream = new FileInputStream("src/test/resources/config.properties");
             properties = new Properties();
             properties.load(fileInputStream);
         } catch (IOException e) {
