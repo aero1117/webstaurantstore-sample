@@ -1,26 +1,29 @@
 package com.webstaurantstore.tests;
-import com.webstaurantstore.utils.TestDataLoader;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+
 import com.webstaurantstore.pages.Cart;
 import com.webstaurantstore.pages.HomePage;
 import com.webstaurantstore.pages.SearchPage;
+import com.webstaurantstore.utils.PageUtils;
 import com.webstaurantstore.utils.PropertiesLoader;
+import com.webstaurantstore.utils.TestDataLoader;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import java.util.concurrent.TimeUnit;
 
 
-public class SearchAddClearTest {
+public class SearchAddClearTest extends PageUtils {
     WebDriver driver;
+    HomePage home;
+    SearchPage results;
+    Cart cart;
     @BeforeMethod
     public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        driver = getDriverChrome();
+        home = new HomePage(driver);
+        results = new SearchPage(driver);
+        cart = new Cart(driver);
     }
 
     @Test
@@ -28,17 +31,17 @@ public class SearchAddClearTest {
         // Set up test case with test data parameters, page objects, and configs
         String searchString = TestDataLoader.getTestData("TC001", "searchString");
         String validateString = TestDataLoader.getTestData("TC001", "validateString");
-        HomePage home = new HomePage(driver);
-        SearchPage results = new SearchPage(driver);
-        Cart cart = new Cart(driver);
         String baseURL = PropertiesLoader.get("HomePageURL");
+        String cartURL = PropertiesLoader.get("CartPageURL");
         driver.get(baseURL);
+
         // Step 1. Perform the search
         home.searchString(searchString, driver);
         home.initSearch();
         // Step 2. Assert that all results have the validate string
         Assert.assertTrue(results.checkAllDescriptionsContain(validateString, driver), "All descriptions contain the validation string");
-        results.addAllToCart(driver);
+        results.addLastItemToCart(driver);
+        driver.get(cartURL);
         // Step 3. Assert the cart is filled
         Assert.assertFalse(cart.isCartEmpty(driver), "Cart contains items");
         // Step 4. Empty cart and assert emptiness

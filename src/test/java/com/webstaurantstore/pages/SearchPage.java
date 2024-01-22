@@ -1,50 +1,57 @@
 package com.webstaurantstore.pages;
 
-import org.openqa.selenium.By;
+import com.webstaurantstore.utils.PageUtils;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 
-public class SearchPage {
+public class SearchPage extends PageUtils {
     @FindBy(xpath = "//*[@id=\"ProductBoxContainer\"]/div[1]/a/span")
-    private List<WebElement> ItemDescriptions;
-    @FindBy(css = "input.btn.btn-cart.btn-small")
+    private List<WebElement> itemDescriptions;
+    @FindBy(name = "addToCartButton")
     private List<WebElement> itemAddCart;
+    @FindBy(xpath = "//div[@class='search__wrap']")
+    private WebElement searchWrapper;
+
 
     public SearchPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
-
     // Method to check each and every item description for a specific string
     public boolean checkAllDescriptionsContain(String text, WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='search__wrap']")));
-        if (ItemDescriptions.isEmpty()) {
+        waitFor(searchWrapper, driver);
+        if (itemDescriptions.isEmpty()) {
             throw new NoSuchElementException("No items loaded on search results page.");
         }
-        for (WebElement element : ItemDescriptions) {
-            if (!element.getText().contains(text)) {
-                return false;
+            for (WebElement element : itemDescriptions) {
+                if (!element.getText().contains(text)) {
+                    return false;
+                }
             }
-
-        }
-        return true;
+            return true;
     }
-    // Method to add all items on a page to the cart
+    // Method to add the last item on the page to the cart
+    public void addLastItemToCart (WebDriver driver) {
+        if (!itemAddCart.isEmpty()) {
+            itemAddCart.getLast().click();
+        }
+        else {
+            throw new NotFoundException("Unable to locate last item.");
+        }
+    }
+
+    /*Method to add all items on a page to the cart - Deprecating since I interpreted the step wrong but will leave it here for reference.
     public void addAllToCart(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         for (WebElement element : itemAddCart) {
             element.click();
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@data-role='notification']")));
+            waitFor((WebElement) By.xpath("//div[@data-role='notification']"), driver);
         }
-    }
+    } */
 
 
 }
