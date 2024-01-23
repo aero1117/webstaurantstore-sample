@@ -40,6 +40,7 @@ public class SearchPage extends PageUtils {
     // Method to add the last item on the page to the cart
     public void addLastItemToCart (WebDriver driver) {
         if (!itemAddCart.isEmpty()) {
+            System.out.println("Adding last item to the cart");
             itemAddCart.getLast().click();
             waitFor(notifyShade, driver);
         }
