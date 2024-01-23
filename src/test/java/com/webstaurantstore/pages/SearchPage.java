@@ -17,6 +17,8 @@ public class SearchPage extends PageUtils {
     private List<WebElement> itemAddCart;
     @FindBy(xpath = "//div[@class='search__wrap']")
     private WebElement searchWrapper;
+    @FindBy(xpath = "//div[@data-role='notification']")
+    private WebElement notifyShade;
 
 
     public SearchPage(WebDriver driver) {
@@ -38,10 +40,12 @@ public class SearchPage extends PageUtils {
     // Method to add the last item on the page to the cart
     public void addLastItemToCart (WebDriver driver) {
         if (!itemAddCart.isEmpty()) {
+            System.out.println("Adding last item to the cart");
             itemAddCart.getLast().click();
+            waitFor(notifyShade, driver);
         }
         else {
-            throw new NotFoundException("Unable to locate last item.");
+            throw new NotFoundException("Unable to locate last item");
         }
     }
 
