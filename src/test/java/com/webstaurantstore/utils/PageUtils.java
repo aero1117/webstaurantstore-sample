@@ -5,7 +5,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebDriver;
-
 import java.time.Duration;
 
 public class PageUtils {
@@ -17,6 +16,8 @@ public class PageUtils {
 
     public WebDriver getDriverChrome()  {
         WebDriverManager.chromedriver().setup();
-        return new ChromeDriver();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        return driver;
     }
 }

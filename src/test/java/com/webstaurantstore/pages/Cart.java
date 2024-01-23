@@ -24,7 +24,6 @@ public class Cart extends PageUtils {
             return cartEmptyCard.isDisplayed();
         }
         catch (NoSuchElementException e) {
-            System.out.println("Cart contains items or Cart Empty card is not found.");
             return false;
         }
     }

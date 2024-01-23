@@ -18,12 +18,16 @@ public class SearchAddClearTest extends PageUtils {
     HomePage home;
     SearchPage results;
     Cart cart;
+    String baseURL;
+    String cartURL;
     @BeforeMethod
     public void setUp() {
         driver = getDriverChrome();
         home = new HomePage(driver);
         results = new SearchPage(driver);
         cart = new Cart(driver);
+        baseURL = PropertiesLoader.get("HomePageURL");
+        cartURL = PropertiesLoader.get("CartPageURL");
     }
 
     @Test
@@ -31,8 +35,6 @@ public class SearchAddClearTest extends PageUtils {
         // Set up test case with test data parameters, page objects, and configs
         String searchString = TestDataLoader.getTestData("TC001", "searchString");
         String validateString = TestDataLoader.getTestData("TC001", "validateString");
-        String baseURL = PropertiesLoader.get("HomePageURL");
-        String cartURL = PropertiesLoader.get("CartPageURL");
         driver.get(baseURL);
 
         // Step 1. Perform the search
