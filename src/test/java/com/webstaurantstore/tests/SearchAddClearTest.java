@@ -45,7 +45,7 @@ public class SearchAddClearTest extends PageUtils {
         results.addLastItemToCart(driver);
         driver.get(cartURL);
         // Step 3. Assert the cart is filled
-        Assert.assertFalse(cart.isCartEmpty(), "Cart contains items");
+        Assert.assertTrue(!cart.isCartEmpty(), "Cart contains items");
         // Step 4. Empty cart and assert emptiness
         cart.emptyCart(driver);
         Assert.assertTrue(cart.isCartEmpty(), "Cart is empty");

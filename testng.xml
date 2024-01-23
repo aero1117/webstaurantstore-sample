@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="WebstaurantStore Assessment">
+    <test verbose="2" preserve-order="true" name="WebstaurantStore - Validate Search/Add/Clear">
+        <classes>
+            <class name="com.webstaurantstore.tests.SearchAddClearTest">
+                <methods>
+                    <include name="searchAddClearTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
