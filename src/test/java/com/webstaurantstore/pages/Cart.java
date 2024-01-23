@@ -8,24 +8,30 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class Cart extends PageUtils {
-    @FindBy(css = "div[class$='box--empty']")
+    @FindBy(xpath = "//div[@class='empty-cart__text']")
     public WebElement cartEmptyCard;
-    @FindBy(css = "button.emptyCartButton.btn.btn-mini.btn-ui.pull-right")
+    @FindBy(xpath = "//button[contains(@class, 'emptyCartButton')]")
     public WebElement emptyCartButton;
+    @FindBy(xpath = "//button[contains(@class, 'mr-2')]")
+    public WebElement confirmEmptyCart;
 
     public Cart(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
-    public boolean isCartEmpty(WebDriver driver) {
+    public boolean isCartEmpty() throws InterruptedException {
+        Thread.sleep(5000); // Sleeping here because we shouldn't know whether the cart container will load for any given test
         try {
-           return cartEmptyCard.isDisplayed();
+            return cartEmptyCard.isDisplayed();
         }
         catch (NoSuchElementException e) {
             System.out.println("Cart contains items or Cart Empty card is not found.");
             return false;
         }
     }
-    public void emptyCart() {
+    public void emptyCart(WebDriver driver) {
         emptyCartButton.click();
+        waitFor(confirmEmptyCart, driver);
+        confirmEmptyCart.click();
+        waitFor(cartEmptyCard, driver);
     }
 }
